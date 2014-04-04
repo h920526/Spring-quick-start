@@ -18,4 +18,6 @@ public interface UserService {
 
 	public void deleteUserByKey(int userKey);
 
+	public User loadAuthenticatedUser();
+
 }

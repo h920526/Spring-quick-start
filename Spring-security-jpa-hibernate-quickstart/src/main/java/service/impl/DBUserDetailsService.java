@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import model.User;
-import model.UserAuthorityInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,11 +30,48 @@ public class DBUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userId)
 			throws UsernameNotFoundException {
-		User user = userService.findUserById(userId);
+		final User user = userService.findUserById(userId);
 		if (user == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
-		return new UserAuthorityInfo(user, ROLE_USER_AUTHORITY);
+		return new UserDetails() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled() {
+				return true;
+			}
+
+			@Override
+			public boolean isCredentialsNonExpired() {
+				return true;
+			}
+
+			@Override
+			public boolean isAccountNonLocked() {
+				return true;
+			}
+
+			@Override
+			public boolean isAccountNonExpired() {
+				return true;
+			}
+
+			@Override
+			public String getUsername() {
+				return user.getUserId();
+			}
+
+			@Override
+			public String getPassword() {
+				return user.getUserPassword();
+			}
+
+			@Override
+			public Collection<? extends GrantedAuthority> getAuthorities() {
+				return ROLE_USER_AUTHORITY;
+			}
+		};
 	}
 
 }
