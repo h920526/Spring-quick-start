@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<sec:http pattern="/resources" security="none" />
+
+	<sec:http auto-config="true">
+		<sec:intercept-url pattern="/" access="ROLE_USER" />
+		<!-- remember me works for db auth only -->
+		<!-- <sec:remember-me key="meSecurityKey" /> -->
+	</sec:http>
+
+	<sec:authentication-manager>
+		<sec:authentication-provider ref="ldapUserAuthenticationProvider" />
+	</sec:authentication-manager>
+
+	<!-- ldap -->
+	<context:property-placeholder location="WEB-INF/ldap_attr.properties" />
+	<bean id="ldapUserAuthenticationProvider"
+		class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
+		<constructor-arg ref="ldapBindAuthenticator" />
+		<constructor-arg ref="ldapAuthoritiesPopulator" />
+	</bean>
+	<bean id="ldapBindAuthenticator"
+		class="org.springframework.security.ldap.authentication.BindAuthenticator">
+		<constructor-arg ref="ldapContextSource" />
+		<property name="userSearch" ref="ldapUserSearch" />
+	</bean>
+	<bean id="ldapUserSearch"
+		class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+		<constructor-arg value="" />
+		<constructor-arg value="(${user_id_attr}={0})" />
+		<constructor-arg ref="ldapContextSource" />
+	</bean>
+	<bean id="ldapAuthoritiesPopulator"
+		class="org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator">
+		<constructor-arg ref="ldapContextSource" />
+		<constructor-arg value="" />
+		<property name="defaultRole" value="ROLE_USER" />
+	</bean>
+
+</beans>
