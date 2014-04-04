@@ -5,11 +5,11 @@
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<http pattern="/resources" security="none" />
+	<http pattern="/login" security="none" />
+	<http pattern="/logout" security="none" />
 
-	<http auto-config="true" use-expressions="true">
-		<intercept-url pattern="/login" access="permitAll" />
-		<intercept-url pattern="/logout" access="permitAll" />
-		<intercept-url pattern="/" access="hasRole('ROLE_USER')" />
+	<http auto-config="true">
+		<intercept-url pattern="/" access="ROLE_USER" />
 		<form-login login-page="/login" authentication-failure-url="/loginfailed"
 			default-target-url="/" />
 		<logout invalidate-session="true" logout-success-url="/"
