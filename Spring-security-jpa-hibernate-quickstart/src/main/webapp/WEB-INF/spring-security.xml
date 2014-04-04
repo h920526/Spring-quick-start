@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<http pattern="/resources" security="none" />
-	<http pattern="/login" security="none" />
-	<http pattern="/logout" security="none" />
+	<sec:http pattern="/resources" security="none" />
+	<sec:http pattern="/login" security="none" />
+	<sec:http pattern="/logout" security="none" />
 
-	<http auto-config="true">
-		<intercept-url pattern="/" access="ROLE_USER" />
-		<form-login login-page="/login" authentication-failure-url="/loginfailed"
-			default-target-url="/" />
-		<logout invalidate-session="true" logout-success-url="/"
+	<sec:http auto-config="true">
+		<sec:intercept-url pattern="/" access="ROLE_USER" />
+		<sec:form-login login-page="/login"
+			authentication-failure-url="/loginfailed" default-target-url="/" />
+		<sec:logout invalidate-session="true" logout-success-url="/"
 			logout-url="/logout" />
-	</http>
+	</sec:http>
 
-	<authentication-manager>
-		<authentication-provider user-service-ref="DBUserDetailsService" />
-	</authentication-manager>
+	<sec:authentication-manager>
+		<sec:authentication-provider
+			user-service-ref="DBUserDetailsService" />
+	</sec:authentication-manager>
 
-</beans:beans>
+</beans>
