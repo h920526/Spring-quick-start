@@ -20,7 +20,6 @@
 	</sec:authentication-manager>
 
 	<!-- ldap -->
-	<context:property-placeholder location="WEB-INF/ldap_attr.properties" />
 	<bean id="ldapUserAuthenticationProvider"
 		class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
 		<constructor-arg ref="ldapBindAuthenticator" />
