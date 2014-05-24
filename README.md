@@ -1,4 +1,4 @@
 spring-quick-start
 ==================
 
-Spring quick start
+Spring4 quick start
