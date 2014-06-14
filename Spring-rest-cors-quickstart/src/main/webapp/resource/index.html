@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html ng-app="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+<script type="text/javascript">
+	function ngController($scope, $http) {
+		$scope.doClick = function() {
+			$http.post("http://127.0.0.1:8080/Spring-cors-quickstart/rest/publ/post", {
+				"id" : "dream"
+			}).success(function(data) {
+				$scope.message = data;
+			});
+		}
+	}
+</script>
+</head>
+<body ng-controller="ngController">
+
+	<input type="button" value="click me" ng-click="doClick()" />
+
+	<div>{{ message }}</div>
+
+</body>
+</html>
