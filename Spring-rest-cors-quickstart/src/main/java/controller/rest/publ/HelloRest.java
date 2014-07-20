@@ -1,12 +1,11 @@
 package controller.rest.publ;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/rest/publ")
 public class HelloRest {
 
@@ -15,7 +14,6 @@ public class HelloRest {
 	}
 
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
-	@ResponseBody
 	public String createBook(@RequestBody String body) {
 		return String.format("Hello POST by %s", body);
 	}
